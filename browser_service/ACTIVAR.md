@@ -45,7 +45,7 @@ Usar CIMD si está habilitado en el tenant. Como alternativa, registrar un clien
 En el panel de Render, configurar:
 
 ```text
-CAD_BASE_URL = origen HTTPS real del servicio, sin / final ni /mcp
+CAD_BASE_URL = origen HTTPS real, sin / final ni /mcp; opcional en Render, que proporciona RENDER_EXTERNAL_URL
 CAD_OAUTH_ISSUER = issuer exacto publicado por Auth0, normalmente con / final
 CAD_JWKS_URL = jwks_uri real del documento de descubrimiento, en el mismo host del issuer
 CAD_SIGNING_KEY = secreto nuevo aleatorio de al menos 32 bytes

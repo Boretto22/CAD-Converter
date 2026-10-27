@@ -60,11 +60,14 @@ class Settings:
 
     @classmethod
     def from_env(cls):
-        required = ('CAD_BASE_URL', 'CAD_OAUTH_ISSUER', 'CAD_JWKS_URL', 'CAD_SIGNING_KEY')
+        base_url = os.environ.get('CAD_BASE_URL') or os.environ.get('RENDER_EXTERNAL_URL')
+        required = ('CAD_OAUTH_ISSUER', 'CAD_JWKS_URL', 'CAD_SIGNING_KEY')
         missing = [key for key in required if not os.environ.get(key)]
+        if not base_url:
+            missing.insert(0, 'CAD_BASE_URL (or Render RENDER_EXTERNAL_URL)')
         if missing:
             raise ValueError('Missing configuration: ' + ', '.join(missing))
-        return cls(base_url=os.environ['CAD_BASE_URL'].rstrip('/'), issuer=os.environ['CAD_OAUTH_ISSUER'],
+        return cls(base_url=base_url.rstrip('/'), issuer=os.environ['CAD_OAUTH_ISSUER'],
                    jwks_url=os.environ['CAD_JWKS_URL'], signing_key=os.environ['CAD_SIGNING_KEY'],
                    data_dir=Path(os.environ.get('CAD_DATA_DIR', '/tmp/engcad/jobs')),
                    profile=os.environ.get('CAD_PROFILE', 'free'),

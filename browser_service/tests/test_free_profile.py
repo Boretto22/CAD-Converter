@@ -27,6 +27,19 @@ def test_env_defaults_to_free(settings,monkeypatch):
     assert Settings.from_env().max_upload_bytes==5*1024*1024
 
 
+@pytest.mark.parametrize('explicit',[False,True])
+def test_render_provided_url_is_used_only_without_explicit_origin(settings,monkeypatch,explicit):
+    monkeypatch.setenv('CAD_OAUTH_ISSUER',settings.issuer)
+    monkeypatch.setenv('CAD_JWKS_URL',settings.jwks_url)
+    monkeypatch.setenv('CAD_SIGNING_KEY',settings.signing_key)
+    monkeypatch.setenv('RENDER_EXTERNAL_URL','https://cad-test.onrender.com')
+    monkeypatch.delenv('CAD_BASE_URL',raising=False)
+    if explicit:
+        monkeypatch.setenv('CAD_BASE_URL',settings.base_url)
+    config=Settings.from_env()
+    assert config.base_url==(settings.base_url if explicit else 'https://cad-test.onrender.com')
+
+
 def test_free_rejects_too_many_pdf_pages(settings,tmp_path):
     import pymupdf
     target=tmp_path/'five.pdf'
