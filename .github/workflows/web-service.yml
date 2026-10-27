@@ -1,0 +1,16 @@
+name: Browser service
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  web-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install ".[dev,step]" ./browser_service
+      - run: python -m pytest -q browser_service/tests
+      - run: docker build -f browser_service/Dockerfile -t engcad-web .
+      - run: python browser_service/package_browser_service.py --output dist/web-release

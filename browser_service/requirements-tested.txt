@@ -1,0 +1,8 @@
+# Direct web dependencies validated on Python 3.12; core versions are in ../requirements-tested.txt.
+mcp==2.3.0
+httpx==0.28.1
+uvicorn==0.54.0
+PyJWT==2.15.1
+cryptography==50.0.2
+starlette==1.10.0
+pydantic==2.14.1

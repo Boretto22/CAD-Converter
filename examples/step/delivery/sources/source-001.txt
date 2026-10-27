@@ -1,0 +1,1 @@
+SYNTHETIC TEST ONLY. Rectangular prism, width 20 mm, height 10 mm, depth 5 mm. Profile centered in XY; bottom Z=0; extrusion +Z. No holes or fillets. Nominal definition, physical accuracy unknown.

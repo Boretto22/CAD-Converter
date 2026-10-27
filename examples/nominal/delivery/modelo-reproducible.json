@@ -1,0 +1,186 @@
+{
+  "title": "Synthetic engineering fixture",
+  "view": "Single synthetic view",
+  "units": "mm",
+  "source_image": "fuente.png",
+  "calibration": {
+    "status": "referenced",
+    "references": [
+      "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica. Base 100 mm"
+    ],
+    "evidence_ids": [
+      "D1"
+    ]
+  },
+  "registration": {
+    "anchors": [
+      {
+        "cad": [
+          0,
+          0
+        ],
+        "pixel": [
+          100,
+          400
+        ]
+      },
+      {
+        "cad": [
+          100,
+          0
+        ],
+        "pixel": [
+          600,
+          400
+        ]
+      },
+      {
+        "cad": [
+          0,
+          50
+        ],
+        "pixel": [
+          100,
+          150
+        ]
+      }
+    ],
+    "max_residual_px": 0.001
+  },
+  "entities": [
+    {
+      "id": "BASE",
+      "type": "LINE",
+      "state": "VERIFICADO",
+      "layer": "GEOMETRY",
+      "evidence": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica.",
+      "definition": {
+        "basis": "explicit_dimensions",
+        "fully_constrained": true,
+        "evidence_ids": [
+          "D1",
+          "D2",
+          "ORIGIN"
+        ],
+        "parameters": [
+          "start",
+          "end"
+        ]
+      },
+      "start": [
+        0,
+        0
+      ],
+      "end": [
+        100,
+        0
+      ]
+    },
+    {
+      "id": "HOLE",
+      "type": "CIRCLE",
+      "state": "VERIFICADO",
+      "layer": "GEOMETRY",
+      "evidence": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica.",
+      "definition": {
+        "basis": "explicit_dimensions",
+        "fully_constrained": true,
+        "evidence_ids": [
+          "D1",
+          "D2",
+          "ORIGIN"
+        ],
+        "parameters": [
+          "center",
+          "radius"
+        ]
+      },
+      "center": [
+        25,
+        25
+      ],
+      "radius": 10
+    }
+  ],
+  "controls": [
+    {
+      "id": "C1",
+      "entity": "BASE",
+      "kind": "line_length",
+      "expected": 100,
+      "tolerance": 1e-06,
+      "tolerance_basis": "Numerical fixture regression, not manufacturing tolerance",
+      "role": "calibration",
+      "evidence": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica.",
+      "evidence_id": "D1"
+    },
+    {
+      "id": "C2",
+      "entity": "HOLE",
+      "kind": "radius",
+      "expected": 10,
+      "tolerance": 1e-06,
+      "tolerance_basis": "Numerical fixture regression, not manufacturing tolerance",
+      "role": "independent",
+      "evidence": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica.",
+      "evidence_id": "D2"
+    }
+  ],
+  "coverage": {
+    "review": "complete",
+    "omitted": []
+  },
+  "issues": [],
+  "engineering": {
+    "scope": "Only synthetic line and circle; headers are outside the fixture scope",
+    "comparison_tolerance": 1e-06,
+    "tolerance_basis": "Synthetic numerical regression",
+    "sources": [
+      {
+        "id": "S1",
+        "path": "sources/source-001.png",
+        "sha256": "3d0dbd0f5c4de664637944a04bf2d1f2ab165d7e8c4f65c0ee5280f8757a2696"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "D1",
+        "source_id": "S1",
+        "page": 1,
+        "locator": "Base (0,0)-(100,0)",
+        "kind": "dimension",
+        "statement": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica. 100 mm",
+        "normalized_value": 100,
+        "normalized_units": "mm"
+      },
+      {
+        "id": "D2",
+        "source_id": "S1",
+        "page": 1,
+        "locator": "Circulo R10",
+        "kind": "dimension",
+        "statement": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica. R10 mm",
+        "normalized_value": 10,
+        "normalized_units": "mm"
+      },
+      {
+        "id": "ORIGIN",
+        "source_id": "S1",
+        "page": 1,
+        "locator": "Origen de la fixture y centro (25,25)",
+        "kind": "datum",
+        "statement": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica."
+      }
+    ],
+    "uncertainty": {
+      "mode": "nominal_definition",
+      "physical_accuracy": "unknown",
+      "basis": "Synthetic nominal geometry; no physical part measured"
+    },
+    "review_image": {
+      "source_id": "S1",
+      "sha256": "3d0dbd0f5c4de664637944a04bf2d1f2ab165d7e8c4f65c0ee5280f8757a2696",
+      "transformation": "Identity; generated synthetic PNG; lossless review copy saved as fuente.png"
+    }
+  }
+}

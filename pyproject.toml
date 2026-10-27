@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engineering-cad-converter"
+version = "1.0.0"
+description = "Evidence-led, agent-assisted image/PDF to CAD workflow"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+dependencies = ["PyMuPDF>=1.24,<3", "ezdxf>=1.4,<2", "Pillow>=10,<14", "numpy>=1.26,<3", "matplotlib>=3.8,<4", "reportlab>=4,<6"]
+
+[project.optional-dependencies]
+step = ["cadquery>=2.5,<3"]
+dev = ["build>=1.2", "pytest>=8,<10", "jsonschema>=4,<5", "PyYAML>=6,<7"]
+
+[project.scripts]
+engcad = "engineering_cad_converter.cli:main"
+
+[tool.setuptools]
+packages = ["engineering_cad_converter"]
+package-dir = {engineering_cad_converter = "skills/engineering-cad-converter/scripts"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

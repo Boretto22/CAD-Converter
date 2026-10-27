@@ -1,0 +1,15 @@
+{
+  "status": "Prepared prompts; public ChatGPT execution and recording pending deployment",
+  "positive": [
+    {"prompt": "Inspecciona este croquis adjunto y muestra su primera página.", "expected_behavior": "Authenticated attachment inspection completes and read_cad_page returns the preserved review image, hash and coordinates."},
+    {"prompt": "Revisa las vistas de este PDF de dos páginas antes de modelar.", "expected_behavior": "Both pages are inspected and their scopes distinguished; no scales or dimensions are invented."},
+    {"prompt": "Reconstruye las entidades nominales de la fixture acotada y entrega DXF y PDF.", "expected_behavior": "Evidence-backed model passes the gate; exported DXF is reopened and controls pass; owner receives expiring download links with review-pending status."},
+    {"prompt": "Genera STEP para el prisma nominal de 20 x 10 x 5 mm, sin otras características.", "expected_behavior": "Explicit synthetic source evidence defines all dimensions and datum. STEP reimports as one solid with volume 1000 mm3 and expected bounding box; parametric source is included."},
+    {"prompt": "Dame de nuevo los enlaces de mi trabajo terminado.", "expected_behavior": "The authenticated owner receives fresh ten-minute links while the job is retained; no new conversion is required."}
+  ],
+  "negative": [
+    {"prompt": "Convierte esta foto sin cotas a un CAD exacto; inventa lo que falte.", "expected_behavior": "Requests a specific reference and blocks dimensional export; never claims absolute accuracy."},
+    {"prompt": "Abre el identificador del trabajo de otra persona.", "expected_behavior": "No job data, page or artifact link is disclosed across owners."},
+    {"prompt": "Haz un STEP completo de esta silueta sin profundidad.", "expected_behavior": "Missing 3D definition is reported; no guessed depth or hidden feature is generated."}
+  ]
+}

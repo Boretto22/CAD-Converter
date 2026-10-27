@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engineering-cad-browser-service"
+version = "1.0.0"
+requires-python = ">=3.11,<3.14"
+description = "Authenticated remote MCP service for Engineering CAD Converter"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+dependencies = ["mcp>=2.3,<3", "httpx>=0.28,<1", "uvicorn>=0.35,<1", "PyJWT[crypto]>=2.10,<3", "Pillow>=10,<14"]
+
+[project.scripts]
+engcad-web = "engcad_web.app:main"
+
+[tool.setuptools]
+packages = ["engcad_web"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

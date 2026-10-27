@@ -1,0 +1,108 @@
+{
+  "status": "PROVISIONAL",
+  "title": "Synthetic engineering fixture",
+  "view": "Single synthetic view",
+  "units": "mm",
+  "model_sha256": "69e515061ef082502002059d3c372f0107674833116523cd5e6f663843ff2b11",
+  "source_image_sha256": "3d0dbd0f5c4de664637944a04bf2d1f2ab165d7e8c4f65c0ee5280f8757a2696",
+  "dxf_sha256": "e4110f1ecb2bc28c416a941b0b23ccb164fa11d5ce283d822043b0f9161fc1ad",
+  "versions": {
+    "PyMuPDF": "2.0",
+    "ezdxf": "1.4.5",
+    "Pillow": "13.0.0",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "reportlab": "5.1.0",
+    "cadquery": "2.8.0"
+  },
+  "registration": {
+    "matrix_cad_to_pixel": [
+      [
+        4.999999999999998,
+        2.842170943040401e-14,
+        99.99999999999989
+      ],
+      [
+        2.842170943040401e-14,
+        -4.999999999999998,
+        399.99999999999955
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "pixel_per_unit": 4.999999999999998,
+    "residual_max_px": 2.3982264690094994e-12,
+    "residual_rms_px": 1.6142096463738842e-12,
+    "note": "Residual de ajuste, no validacion dimensional independiente"
+  },
+  "entity_count": 2,
+  "entity_types": {
+    "LINE": 1,
+    "CIRCLE": 1
+  },
+  "entity_handles": {
+    "BASE": "8C",
+    "HOLE": "8D"
+  },
+  "audit_errors": 0,
+  "audit_fixes": 0,
+  "controls": [
+    {
+      "id": "C1",
+      "entity": "BASE",
+      "kind": "line_length",
+      "expected": 100,
+      "tolerance": 1e-06,
+      "tolerance_basis": "Numerical fixture regression, not manufacturing tolerance",
+      "role": "calibration",
+      "evidence": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica.",
+      "evidence_id": "D1",
+      "measured": 100.0,
+      "delta": 0.0,
+      "result": "PASS"
+    },
+    {
+      "id": "C2",
+      "entity": "HOLE",
+      "kind": "radius",
+      "expected": 10,
+      "tolerance": 1e-06,
+      "tolerance_basis": "Numerical fixture regression, not manufacturing tolerance",
+      "role": "independent",
+      "evidence": "Fixture sintetica de prueba; nominales definidos por el generador, no medicion fisica.",
+      "evidence_id": "D2",
+      "measured": 10.0,
+      "delta": 0.0,
+      "result": "PASS"
+    }
+  ],
+  "visual": {
+    "threshold_gray": 180,
+    "band_px": 2,
+    "source_ink_pixels": 1789,
+    "cad_ink_pixels": 945,
+    "source_uncovered_pct": 10.117384013415316,
+    "cad_unmatched_pct": 0.0,
+    "meaning": "Diagnostico de tinta; NO porcentaje de fidelidad dimensional"
+  },
+  "limitations": [
+    "Exportador de una vista. Revisar cobertura de todas las páginas y vistas del original.",
+    "La auditoría DXF no verifica topología, autointersecciones, asociaciones ni semántica.",
+    "No se ha probado en un segundo programa CAD. Revisar fuentes, cotas y rayados.",
+    "La superposición incluye texto y ruido. Sus porcentajes no son precisión dimensional."
+  ],
+  "issues": [],
+  "coverage": {
+    "review": "complete",
+    "omitted": []
+  },
+  "visual_review": "PENDIENTE",
+  "uncertainty": {
+    "mode": "nominal_definition",
+    "physical_accuracy": "unknown",
+    "basis": "Synthetic nominal geometry; no physical part measured"
+  }
+}

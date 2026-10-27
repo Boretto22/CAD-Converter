@@ -1,0 +1,39 @@
+{
+  "file": "pieza.step",
+  "sha256": "a911e76128489e42c3b410195a37403f67f66765db5e798128e5ac95acd68875",
+  "units": "mm",
+  "valid": true,
+  "solids": 1,
+  "volume_mm3": 999.9999999999998,
+  "bbox_mm": [
+    20.0,
+    10.0,
+    5.0
+  ],
+  "status": "DEFINED_REVIEW_PENDING",
+  "checks": [
+    {
+      "property": "solids",
+      "pass": true,
+      "tolerance": 0
+    },
+    {
+      "property": "volume_mm3",
+      "pass": true,
+      "tolerance": 1e-06
+    },
+    {
+      "property": "bbox_mm",
+      "pass": true,
+      "tolerance": 1e-06
+    }
+  ],
+  "properties_match": true,
+  "scope": "Synthetic rectangular prism without other features",
+  "physical_accuracy": "unknown",
+  "limitations": [
+    "Only simple extrusion; no hidden features inferred",
+    "Volume and bounding box do not certify all geometry",
+    "External CAD, source interpretation and manufacturing review pending"
+  ]
+}

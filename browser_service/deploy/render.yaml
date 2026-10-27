@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: engineering-cad-converter-web
+    runtime: docker
+    region: frankfurt
+    dockerfilePath: ./browser_service/Dockerfile
+    dockerContext: .
+    plan: free
+    numInstances: 1
+    healthCheckPath: /health
+    autoDeployTrigger: "off"
+    envVars:
+      - key: CAD_BASE_URL
+        sync: false
+      - key: CAD_OAUTH_ISSUER
+        sync: false
+      - key: CAD_JWKS_URL
+        sync: false
+      - key: CAD_SIGNING_KEY
+        generateValue: true
+      - key: CAD_DATA_DIR
+        value: /tmp/engcad/jobs
+      - key: CAD_PROFILE
+        value: free
+      - key: CAD_FILE_HOSTS
+        value: files.openai.com,files.oaiusercontent.com

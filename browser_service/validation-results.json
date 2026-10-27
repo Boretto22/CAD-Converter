@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-28",
+  "service_version": "1.0.0",
+  "result": "PASS",
+  "pytest": {
+    "tests": 37,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scope": "Web service and core packaging tests; full/free synthetic DXF/PDF/STEP workflows; production JWT checks separately; injected test HTTP verifier",
+  "dependencies": {
+    "mcp": "2.3.0",
+    "httpx": "0.28.1",
+    "uvicorn": "0.54.0",
+    "PyJWT": "2.15.1",
+    "cryptography": "50.0.2",
+    "starlette": "1.10.0",
+    "pydantic": "2.14.1"
+  },
+  "public_deployment": "NOT_CREATED",
+  "real_oauth_login": "PENDING_PROVIDER_SETUP",
+  "real_chatgpt_attachment": "NOT_TESTED",
+  "second_account": "NOT_TESTED",
+  "docker_linux_build": "NOT_RUN_DOCKER_UNAVAILABLE",
+  "render_connection": "VERIFIED_WORKSPACE_CONFIRMED",
+  "github_target": "EMPTY_REPOSITORY_VERIFIED_UPLOAD_NOT_AUTHORIZED",
+  "public_plugin_review": "NOT_SUBMITTED",
+  "blueprint_schema": {
+    "result": "PASS",
+    "source": "https://render.com/schema/render.yaml.json",
+    "schema_sha256": "8a3fb8da6b4f55fe686fbefa790e011d3dd7895f013f355953c572a21ab6494a",
+    "region": "frankfurt",
+    "auto_deploy": "off",
+    "cli_platform_validation": "NOT_RUN_CLI_UNAVAILABLE",
+    "plan": "free",
+    "persistent_disk": false
+  },
+  "cost_policy": {
+    "render_plan": "free",
+    "instances": 1,
+    "persistent_disk": false,
+    "paid_resources_created": false,
+    "automatic_deploys": false,
+    "github_actions": "manual_only",
+    "provider_pricing_checked": "2026-10-28",
+    "no_payment_method": "operator_requirement"
+  },
+  "free_profile": {
+    "max_upload_bytes": 5242880,
+    "max_pages": 4,
+    "max_render_pixels_per_pdf_page": 2000000,
+    "max_source_image_pixels": 4000000,
+    "max_total_pixels": 6000000,
+    "max_retention_seconds": 3600,
+    "max_user_jobs": 6,
+    "max_total_jobs": 24,
+    "queue": 2,
+    "active_workers": 1,
+    "max_entities": 250,
+    "early_data_loss": "sleep/restart/redeploy",
+    "render_512mb_runtime": "NOT_TESTED"
+  }
+}

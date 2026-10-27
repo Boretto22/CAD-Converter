@@ -1,0 +1,31 @@
+{
+  "status": "DEFINED_REVIEW_PENDING",
+  "scope": "Only synthetic line and circle; headers are outside the fixture scope",
+  "entities": 2,
+  "controls": [
+    {
+      "id": "C1",
+      "measured": 100.0,
+      "expected": 100
+    },
+    {
+      "id": "C2",
+      "measured": 10.0,
+      "expected": 10
+    }
+  ],
+  "uncertainty": {
+    "mode": "nominal_definition",
+    "physical_accuracy": "unknown",
+    "basis": "Synthetic nominal geometry; no physical part measured"
+  },
+  "note": "Comprobacion estructural y numerica; no certifica la interpretacion ni la exactitud fisica.",
+  "export_reopened": true,
+  "dxf_sha256": "e4110f1ecb2bc28c416a941b0b23ccb164fa11d5ce283d822043b0f9161fc1ad",
+  "review": "PENDIENTE",
+  "required": [
+    "Revision semantica y de cobertura",
+    "Revision visual con registro fijo",
+    "Comprobaciones especializadas del alcance"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "engineering-cad-converter",
+  "version": "1.0.0",
+  "description": "Conversión asistida de PDF y croquis a CAD con evidencia dimensional, incertidumbre y validación. DXF editable; STEP limitado a extrusiones definidas.",
+  "license": "MIT",
+  "keywords": ["engineering", "cad", "dxf", "step", "traceability"],
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "Engineering CAD Converter",
+        "shortDescription": "CAD con medidas trazables y validación",
+        "longDescription": "Reconstruye geometría respaldada por cotas o mediciones documentadas. Conserva fuentes y reporta incertidumbre. Requiere Python local y revisión técnica; no promete precisión absoluta.",
+        "category": "Productivity",
+        "defaultPrompt": ["Convierte este plano a DXF. Comprueba escala, unidades y datos faltantes antes de modelar."],
+        "brandColor": "#17344D"
+      }
+    }
+  }
+}

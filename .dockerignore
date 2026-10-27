@@ -1,0 +1,13 @@
+.venv
+work
+dist
+**/dist
+**/build
+**/*.egg-info
+**/__pycache__
+.pytest_cache
+.git
+.env
+.env.*
+**/*.key
+**/*.pem

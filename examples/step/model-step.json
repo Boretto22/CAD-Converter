@@ -1,0 +1,51 @@
+{
+  "units": "mm",
+  "fully_defined": true,
+  "issues": [],
+  "scope": "Synthetic rectangular prism without other features",
+  "datum": "Profile centered at XY origin; bottom Z=0; depth in +Z",
+  "physical_accuracy": "unknown",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "nominal-specification.txt",
+      "sha256": "56129dadd881bc7d1ff5a2b318e18fad55a1ce2b034b4b21bf484d13d71ba78f"
+    }
+  ],
+  "profile": "rectangle",
+  "dimensions": {
+    "width": {
+      "value": 20,
+      "source_id": "S1",
+      "locator": "nominal specification, line 1",
+      "statement": "20 mm; synthetic width"
+    },
+    "height": {
+      "value": 10,
+      "source_id": "S1",
+      "locator": "nominal specification, line 1",
+      "statement": "10 mm; synthetic height"
+    },
+    "depth": {
+      "value": 5,
+      "source_id": "S1",
+      "locator": "nominal specification, line 1",
+      "statement": "5 mm; synthetic depth"
+    }
+  },
+  "expected": {
+    "units": "mm",
+    "solids": 1,
+    "volume_mm3": 1000,
+    "bbox_mm": [
+      20,
+      10,
+      5
+    ],
+    "tolerances": {
+      "volume_mm3": 1e-06,
+      "bbox_mm": 1e-06
+    },
+    "basis": "Independent nominal calculation 20*10*5=1000 mm3; axis dimensions 20,10,5. Numerical regression tolerances, not manufacturing tolerances."
+  }
+}
