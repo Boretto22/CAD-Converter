@@ -3,6 +3,7 @@ from dataclasses import replace
 import hashlib
 import json
 import time
+from urllib.parse import urlsplit
 from types import SimpleNamespace
 import pytest
 import httpx
@@ -44,13 +45,15 @@ def test_attachment_rejection_diagnostic_excludes_signed_capability(settings):
 
 @pytest.mark.parametrize('url,allowed',[
     ('https://oaisdmntprnortheu.blob.core.windows.net/file?sig=synthetic',True),
+    ('https://oaisdmntpritalynorth.blob.core.windows.net/file?sig=synthetic',True),
     ('https://oaisdmntprnortheu.blob.core.windows.net.evil.test/file',False),
     ('https://other-account.blob.core.windows.net/file',False),
+    ('https://oaisdmntprunverified.blob.core.windows.net/file',False),
     ('http://oaisdmntprnortheu.blob.core.windows.net/file',False),
 ])
 def test_only_observed_azure_account_is_allowed(settings,url,allowed):
     if allowed:
-        assert validate_url(url,settings.file_hosts)=='oaisdmntprnortheu.blob.core.windows.net'
+        assert validate_url(url,settings.file_hosts)==urlsplit(url).hostname
     else:
         with pytest.raises(ValueError):
             validate_url(url,settings.file_hosts)

@@ -6,7 +6,8 @@ import os
 # Exact Azure origin observed in a real ChatGPT fileParams handoff on 2026-10-28.
 # This is not permission for arbitrary Azure storage accounts or suffix wildcards.
 DEFAULT_FILE_HOSTS = ('files.openai.com', 'files.oaiusercontent.com',
-                      'oaisdmntprnortheu.blob.core.windows.net')
+                      'oaisdmntprnortheu.blob.core.windows.net',
+                      'oaisdmntpritalynorth.blob.core.windows.net')
 
 
 @dataclass(frozen=True)
