@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "cad": {
+      "type": "streamable-http",
+      "url": "https://engineering-cad-converter-web.onrender.com/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "provided",
+              "clientId": "tpc_bCqGHRjZvk7L3wB438rkxr",
+              "tokenEndpointAuthMethod": "none"
+            },
+            "resource": "https://engineering-cad-converter-web.onrender.com/mcp",
+            "baseScopes": [
+              "cad:read",
+              "cad:write"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

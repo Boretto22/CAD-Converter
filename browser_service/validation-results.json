@@ -3,7 +3,7 @@
   "service_version": "1.0.0",
   "result": "PASS",
   "pytest": {
-    "tests": 39,
+    "tests": 46,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -19,8 +19,8 @@
     "pydantic": "2.14.1"
   },
   "public_deployment": "LIVE_HEALTH_200_UNAUTHENTICATED_MCP_401",
-  "real_oauth_login": "API_REGISTERED_CLIENT_CONFIGURATION_IN_PROGRESS",
-  "real_chatgpt_attachment": "NOT_TESTED",
+  "real_oauth_login": "PASS_CHATGPT_WEB_OAUTH_PKCE_AND_PRODUCTION_JWT",
+  "real_chatgpt_attachment": "PASS_REAL_SIGNED_PDF_ATTACHMENTS_FROM_TWO_REGIONAL_ORIGINS",
   "second_account": "NOT_TESTED",
   "docker_linux_build": "PASS_RENDER_BUILD_AND_STARTUP",
   "render_connection": "VERIFIED_WORKSPACE_CONFIRMED",
@@ -59,8 +59,68 @@
     "active_workers": 1,
     "max_entities": 250,
     "early_data_loss": "sleep/restart/redeploy",
-    "render_512mb_runtime": "STARTUP_PASS_CONVERSION_PENDING_REAL_OAUTH"
+    "render_512mb_runtime": "PASS_SYNTHETIC_DXF_PDF_STEP_SINGLE_WORKER"
   },
   "public_service_url": "https://engineering-cad-converter-web.onrender.com",
-  "repository": "https://github.com/Boretto22/CAD-Converter"
+  "repository": "https://github.com/Boretto22/CAD-Converter",
+  "chatgpt_web_mcp": "CONNECTED_SIX_TOOLS",
+  "chatgpt_plugin_zip": "ACCEPTED_CLOUD_IMPORT_STARTER_OPENED_DESKTOP_ON_TEST_ACCOUNT",
+  "deployed_commit": "3b908ef601a65e4aa6f19632a68ee40c9d36f2c0",
+  "browser_validation": {
+    "surface": "ChatGPT web, one Plus account",
+    "step": {
+      "download_http": 200,
+      "step_reimport_valid": true,
+      "solids": 1,
+      "volume_mm3": 999.9999999999998,
+      "bbox_mm": [
+        20.0,
+        10.0,
+        5.0
+      ],
+      "original_pdf_sha256_match": true,
+      "physical_accuracy": "unknown",
+      "review": "pending",
+      "step_sha256": "8ae2d1ff199ca38c58d9f7981b1e3727bc997ec90084ce380c688cbef997aa1c",
+      "source_sha256": "f104bdc3bf48f47499993cddb94c70d74998ae243e2ab2919ddd259922cf4085"
+    },
+    "dxf": {
+      "download_http": 200,
+      "dxf_reopen_valid": true,
+      "entities": 2,
+      "units": "mm",
+      "line_start": [
+        0,
+        0,
+        0
+      ],
+      "line_end": [
+        100,
+        0,
+        0
+      ],
+      "line_length_mm": 100.0,
+      "circle_center": [
+        25,
+        25,
+        0
+      ],
+      "circle_radius_mm": 10.0,
+      "pdf_pages": 5,
+      "original_pdf_sha256_match": true,
+      "physical_accuracy": "unknown",
+      "review": "pending",
+      "dxf_sha256": "584ded8cc0f9ccccea55800c6e77f4b5b0efecef48c6615c010380e8f63fc137",
+      "source_sha256": "59fdd902d900dd0a92bcd839a0c786f6a210441e3d83006e8c50056ca2579564",
+      "verification_pdf_visual_review": "PASS_ALL_FIVE_PAGES"
+    },
+    "download_verification": "HTTPS 200, ZIP contents checked and CAD reopened locally; IAB download-event observation timed out",
+    "attachment_origins_observed": [
+      "oaisdmntprnortheu.blob.core.windows.net",
+      "oaisdmntpritalynorth.blob.core.windows.net"
+    ],
+    "other_regions": "Not exhaustively tested; unapproved origins remain blocked for operator review",
+    "manufacturing_acceptance": "NOT_CERTIFIED",
+    "external_cad_application": "NOT_TESTED"
+  }
 }

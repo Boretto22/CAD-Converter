@@ -1,5 +1,7 @@
 # Engineering CAD Converter v1.0
 
+**Para usarlo sin instalar Python:** [guía de ChatGPT en el navegador](browser_service/USAR-EN-CHATGPT.md). El servicio remoto usa Render Free y Auth0 Free, con límites de capacidad y almacenamiento temporal.
+
 **PDF, imágenes y croquis a CAD editable con evidencia dimensional.** Proyecto local distribuible, skill reutilizable y paquete de plugin para ChatGPT/Codex. No requiere una clave API.
 
 Estado: versión 1.0.0 del software. Reconstrucción **asistida**, no reconocimiento automático universal. Ninguna prueba sintética certifica la precisión de un plano real.
@@ -41,11 +43,11 @@ Para una extrusión rectangular o circular completamente definida: `engcad step 
 
 ## Servicio para ChatGPT en el navegador
 
-La implementación remota está en [browser_service](browser_service/README.md), con [activación gratuita guiada](browser_service/ACTIVAR.md). Usa Render Free y Auth0 Free, sin recursos de pago ni clave de API de OpenAI. El servicio ya arranca en [Render Free](https://engineering-cad-converter-web.onrender.com); falta completar OAuth y la conexión real de ChatGPT. El alojamiento gratuito tiene suspensión y almacenamiento temporal; descargar resultados al terminar.
+La implementación remota está en [browser_service](browser_service/README.md), con [activación gratuita guiada](browser_service/ACTIVAR.md). Usa Render Free y Auth0 Free, sin recursos de pago ni clave de API de OpenAI. El servicio está conectado y comprobado con dos PDF sintéticos desde ChatGPT web. Consulta la [guía de uso en el navegador](browser_service/USAR-EN-CHATGPT.md). El alojamiento gratuito tiene suspensión y almacenamiento temporal; descargar resultados al terminar.
 
 ## ChatGPT Plus y distribución
 
-El plugin v1 requiere ejecución **local de escritorio**. Tener Plus no garantiza que una función concreta esté habilitada en una cuenta o superficie. No funciona como convertidor alojado en cualquier chat web o móvil. Consulta [instalación](docs/INSTALL.md) y [distribución verificada](docs/DISTRIBUTION.md).
+El plugin local v1 requiere ejecución **local de escritorio**. Tener Plus no garantiza que una función concreta esté habilitada en una cuenta o superficie. No funciona como convertidor alojado en cualquier chat web o móvil. Consulta [instalación](docs/INSTALL.md) y [distribución verificada](docs/DISTRIBUTION.md).
 
 Se distribuyen tres ZIP: fuente preparada para GitHub, plugin con `plugin.json` en la raíz y skill independiente. El repositorio local es utilizable sin ChatGPT. Subir un ZIP a un chat no demuestra que se haya instalado un plugin. La publicación oficial requiere el proceso del portal; este proyecto no afirma estar aprobado ni publicado.
 

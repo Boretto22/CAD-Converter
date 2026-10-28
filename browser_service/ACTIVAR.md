@@ -38,7 +38,11 @@ Añadir permisos `cad:read` y `cad:write`. Habilitar el flujo de consentimiento 
 
 Para que Auth0 entienda el parámetro estándar `resource`, comprobar Resource Parameter Compatibility Profile en Settings → Advanced y habilitar la compatibilidad si el tenant la necesita. El valor `aud` del token debe ser exactamente el identificador `/mcp`; no sirve un token destinado a `/userinfo`. [Explicación oficial de Auth0](https://support.auth0.com/center/s/article/mcp-audience-error-with-auth0).
 
-Usar CIMD si está habilitado en el tenant. Como alternativa, registrar un cliente público con Authorization Code + PKCE S256 y configurar en el proveedor el callback exacto mostrado por ChatGPT. No usar una URL de callback adivinada ni un secreto de aplicación dentro del ZIP. Si se usa DCR, habilitarlo y revisar las conexiones permitidas. [Opciones de autenticación de ChatGPT](https://developers.openai.com/plugins/build/auth).
+Para este despliegue gratuito se ha registrado un cliente público de terceros con Authorization Code + PKCE S256, autenticación del token `none` y únicamente los permisos `cad:read`/`cad:write` sobre el conversor. No tiene acceso a Auth0 Management API, acceso anónimo ni credenciales entre máquinas. El callback que ChatGPT ha mostrado coincide con `https://chatgpt.com/connector_platform_oauth_redirect` y se ha registrado exactamente. Los datos públicos de conexión están en [USAR-EN-CHATGPT.md](USAR-EN-CHATGPT.md).
+
+Auth0 exige una fuente de cuentas promovida al dominio para sus aplicaciones de terceros. Este ajuste afecta a todas las aplicaciones de terceros del tenant, incluidas futuras: requiere autorización explícita del propietario. En esta instalación se ha explicado y autorizado por separado. Resource Parameter Compatibility Profile e Include Issuer in Authorization Responses ya estaban activos; no se han abierto registros DCR/CIMD automáticos.
+
+Para otros proveedores puede usarse CIMD cuando sea compatible con el plan y con la autenticación elegida. No activar prestaciones de pago ni usar un callback adivinado. No incluir secretos de cliente en un ZIP. [Opciones oficiales de autenticación](https://developers.openai.com/plugins/build/auth).
 
 ## 5. Variables del servicio
 
@@ -55,6 +59,10 @@ CAD_FILE_HOSTS = hosts exactos de adjuntos de ChatGPT aprobados por el propietar
 ```
 
 La plantilla de Render genera el secreto. No pegarlo en el chat, ni publicarlo, ni incluirlo en GitHub. Los dominios y el identificador público de cliente pueden compartirse para completar la configuración.
+
+El conector Render inicia un despliegue al actualizar variables. Revisar su respuesta y el historial antes de lanzar otro: desactivar despliegues por cambios de Git no impide el que inicia una actualización de variables.
+
+La prueba real de adjuntos del 28/10/2026 entregó enlaces desde `oaisdmntprnortheu.blob.core.windows.net` y `oaisdmntpritalynorth.blob.core.windows.net`; se incluyen únicamente esas dos cuentas exactas de Azure, además de los hosts anteriores de OpenAI. No se permite `*.blob.core.windows.net`. Si una región usa otro origen, verificar una entrega real de ChatGPT y revisar el dominio antes de añadirlo; no aceptar automáticamente hosts que proponga un usuario o un documento. El diagnóstico de rechazo muestra solo esquema y host, nunca el enlace firmado.
 
 Comprobar el issuer y `jwks_uri` en el documento de descubrimiento del proveedor. PKCE debe anunciar `S256`. El backend valida firma, issuer, audiencia y vencimiento en cada petición. La metadata del recurso se sirve en `/.well-known/oauth-protected-resource/mcp`.
 

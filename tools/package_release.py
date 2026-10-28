@@ -20,7 +20,7 @@ def selected(root):
         if file.is_file() and (rel.as_posix() in TOP_FILES or rel.parts[0] in DIRECTORIES):
             if rel.parts[0] == 'browser_service':
                 allowed_roots = {'engcad_web', 'tests', 'plugin', 'deploy'}
-                allowed_files = {'Dockerfile', 'pyproject.toml', 'README.md', 'ACTIVAR.md', 'VALIDATION.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md',
+                allowed_files = {'Dockerfile', 'pyproject.toml', 'README.md', 'ACTIVAR.md', 'USAR-EN-CHATGPT.md', 'VALIDATION.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md',
                                  'validation-results.json', 'requirements-tested.txt', 'review-cases.json',
                                  'configure_plugin.py', 'package_browser_service.py'}
                 if (len(rel.parts) == 2 and file.name not in allowed_files) or (len(rel.parts) > 2 and rel.parts[1] not in allowed_roots):
@@ -80,7 +80,8 @@ def package(output, root=ROOT):
         'El ZIP skill contiene la skill reutilizable. El software local funciona sin ChatGPT.\n'
         'El wheel y sdist, cuando estan presentes, permiten instalar el paquete Python.\n'
         'SHA256SUMS.txt verifica los paquetes; CONTENTS.json verifica archivos del proyecto.\n'
-        'No se ha publicado un repositorio GitHub ni un plugin en el directorio.\n', encoding='utf-8')
+        'Consultar README.md y browser_service/USAR-EN-CHATGPT.md para el servicio web y su estado actual.\n'
+        'Publicar codigo en GitHub no equivale a aprobar un plugin en el directorio.\n', encoding='utf-8')
     bundle_name = f'Engineering-CAD-Converter-v{version}.zip'
     bundle_files = sorted(output.iterdir())
     archive(output / bundle_name, [(f, f.name) for f in bundle_files])

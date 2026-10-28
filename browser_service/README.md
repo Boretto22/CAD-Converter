@@ -2,11 +2,13 @@
 
 Servidor remoto para convertir adjuntos desde ChatGPT en el navegador. La persona que usa el conversor no instala Python ni prepara JSON: ChatGPT inspecciona el plano con las herramientas y prepara el modelo respaldado por evidencia. El servidor ejecuta el gate y genera archivos reales.
 
-**Estado:** servicio alojado en [Render Free](https://engineering-cad-converter-web.onrender.com), con salud pública comprobada. Falta completar OAuth y probar la conexión real desde ChatGPT. No se afirma publicación en el directorio ni instalación en una segunda cuenta.
+**Estado:** servicio activo en [Render Free](https://engineering-cad-converter-web.onrender.com) y conectado a ChatGPT web. Se han comprobado dos conversiones sintéticas reales: PDF a DXF/PDF e información nominal a STEP, con descargas HTTPS y reapertura local. Falta probar una segunda cuenta real; no está publicado en el directorio público.
 
 ## Para la persona que convierte un plano
 
-Después de que el propietario active el servicio:
+Consultar la [guía para usarlo desde el navegador](USAR-EN-CHATGPT.md). La conexión web del propietario ya está instalada y comprobada. El ZIP con skill se importó, pero su enlace de inicio abrió escritorio; para uso exclusivamente web, usar la conexión MCP personalizada de la guía.
+
+Después de completar el acceso:
 
 1. Instala o conecta Engineering CAD Converter Web en ChatGPT con el enlace del propietario.
 2. Inicia sesión cuando ChatGPT lo solicite.
@@ -52,7 +54,7 @@ El perfil opcional `full` conserva los límites anteriores de 20 MiB, 12 página
 
 ## Entrega y validación
 
-[VALIDATION.md](VALIDATION.md) detalla las pruebas y sus límites. `review-cases.json` prepara cinco casos positivos y tres negativos para revisión del plugin. El vídeo y las pruebas reales de OAuth/ChatGPT no se inventan.
+[VALIDATION.md](VALIDATION.md) detalla las 46 pruebas locales, los dos casos reales en ChatGPT y sus límites. Los orígenes regionales de archivos no observados requieren revisión del propietario; no se admiten automáticamente. `review-cases.json` prepara cinco casos positivos y tres negativos para revisión del plugin. El vídeo y las pruebas reales de OAuth/ChatGPT no se inventan.
 
 Para generar el plugin después de obtener la URL real:
 

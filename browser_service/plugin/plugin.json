@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "engineering-cad-converter-web",
+  "version": "1.0.0",
+  "description": "CAD conversion from ChatGPT attachments with evidence and engineering checks.",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Engineering CAD Converter Web",
+        "developerName": "Boretto22",
+        "shortDescription": "Planos a CAD desde ChatGPT con medidas trazables",
+        "longDescription": "Receives PDF and image attachments, preserves evidence, checks dimensions and exports DXF or supported STEP. Requires technical review.",
+        "category": "Productivity",
+        "websiteURL": "https://engineering-cad-converter-web.onrender.com",
+        "privacyPolicyURL": "https://engineering-cad-converter-web.onrender.com/privacy",
+        "termsOfServiceURL": "https://engineering-cad-converter-web.onrender.com/terms",
+        "supportURL": "https://engineering-cad-converter-web.onrender.com/support",
+        "defaultPrompt": [
+          "Convierte este plano a DXF. Comprueba las unidades, la escala y las cotas antes de exportar."
+        ]
+      }
+    }
+  }
+}
