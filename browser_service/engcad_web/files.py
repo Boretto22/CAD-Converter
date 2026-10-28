@@ -14,7 +14,11 @@ def validate_url(url, hosts):
     parsed = urlsplit(url)
     if (parsed.scheme != 'https' or parsed.hostname not in hosts or parsed.username or parsed.password
             or parsed.port not in (None, 443) or parsed.fragment):
-        raise ValueError('Only HTTPS attachments from approved hosts are accepted; no redirects')
+        # Paths and queries can contain signed capabilities; report only the origin.
+        import re
+        scheme = re.sub(r'[^a-z0-9+.-]', '?', parsed.scheme.lower())[:16]
+        host = re.sub(r'[^a-z0-9.-]', '?', (parsed.hostname or '').lower())[:253]
+        raise ValueError(f'Only HTTPS attachments from approved hosts are accepted; no redirects. Received scheme={scheme!r}, host={host!r}. Never invent a download URL; use the ChatGPT file attachment value.')
     return parsed.hostname
 
 

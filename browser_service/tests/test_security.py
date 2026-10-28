@@ -34,6 +34,14 @@ def test_jwt_signature_audience_expiry_issuer(settings):
     assert asyncio.run(verifier.verify_token(jwt.encode(claims,other,algorithm='RS256'))) is None
 
 
+def test_attachment_rejection_diagnostic_excludes_signed_capability(settings):
+    with pytest.raises(ValueError) as error:
+        validate_url('https://files02.oaiusercontent.com/private-plan.pdf?sig=DO-NOT-SHOW',settings.file_hosts)
+    assert 'files02.oaiusercontent.com' in str(error.value)
+    assert 'private-plan' not in str(error.value)
+    assert 'DO-NOT-SHOW' not in str(error.value)
+
+
 def test_store_expiry_ownership_tampering_and_cleanup(settings):
     store = Store(settings)
     job = store.create('alice','dxf')
