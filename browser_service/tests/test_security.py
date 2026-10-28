@@ -42,6 +42,20 @@ def test_attachment_rejection_diagnostic_excludes_signed_capability(settings):
     assert 'DO-NOT-SHOW' not in str(error.value)
 
 
+@pytest.mark.parametrize('url,allowed',[
+    ('https://oaisdmntprnortheu.blob.core.windows.net/file?sig=synthetic',True),
+    ('https://oaisdmntprnortheu.blob.core.windows.net.evil.test/file',False),
+    ('https://other-account.blob.core.windows.net/file',False),
+    ('http://oaisdmntprnortheu.blob.core.windows.net/file',False),
+])
+def test_only_observed_azure_account_is_allowed(settings,url,allowed):
+    if allowed:
+        assert validate_url(url,settings.file_hosts)=='oaisdmntprnortheu.blob.core.windows.net'
+    else:
+        with pytest.raises(ValueError):
+            validate_url(url,settings.file_hosts)
+
+
 def test_store_expiry_ownership_tampering_and_cleanup(settings):
     store = Store(settings)
     job = store.create('alice','dxf')

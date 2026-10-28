@@ -3,6 +3,11 @@ from pathlib import Path
 from urllib.parse import urlsplit
 import os
 
+# Exact Azure origin observed in a real ChatGPT fileParams handoff on 2026-10-28.
+# This is not permission for arbitrary Azure storage accounts or suffix wildcards.
+DEFAULT_FILE_HOSTS = ('files.openai.com', 'files.oaiusercontent.com',
+                      'oaisdmntprnortheu.blob.core.windows.net')
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -18,7 +23,7 @@ class Settings:
     max_user_jobs: int = 20
     max_total_jobs: int = 200
     max_queue: int = 6
-    file_hosts: tuple[str, ...] = ('files.openai.com', 'files.oaiusercontent.com')
+    file_hosts: tuple[str, ...] = DEFAULT_FILE_HOSTS
     profile: str = 'full'
 
     def __post_init__(self):
@@ -72,4 +77,4 @@ class Settings:
                    data_dir=Path(os.environ.get('CAD_DATA_DIR', '/tmp/engcad/jobs')),
                    profile=os.environ.get('CAD_PROFILE', 'free'),
                    file_hosts=tuple(x.strip().lower() for x in os.environ.get('CAD_FILE_HOSTS',
-                       'files.openai.com,files.oaiusercontent.com').split(',') if x.strip())).validate()
+                       ','.join(DEFAULT_FILE_HOSTS)).split(',') if x.strip())).validate()
