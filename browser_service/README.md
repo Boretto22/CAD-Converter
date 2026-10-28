@@ -2,7 +2,7 @@
 
 Servidor remoto para convertir adjuntos desde ChatGPT en el navegador. La persona que usa el conversor no instala Python ni prepara JSON: ChatGPT inspecciona el plano con las herramientas y prepara el modelo respaldado por evidencia. El servidor ejecuta el gate y genera archivos reales.
 
-**Estado:** implementación disponible para pruebas y despliegue. La URL pública y el acceso real de ChatGPT dependen de completar el alojamiento y OAuth. No se afirma publicación ni instalación en una segunda cuenta.
+**Estado:** servicio alojado en [Render Free](https://engineering-cad-converter-web.onrender.com), con salud pública comprobada. Falta completar OAuth y probar la conexión real desde ChatGPT. No se afirma publicación en el directorio ni instalación en una segunda cuenta.
 
 ## Para la persona que convierte un plano
 

@@ -3,7 +3,7 @@
   "service_version": "1.0.0",
   "result": "PASS",
   "pytest": {
-    "tests": 37,
+    "tests": 39,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -18,13 +18,13 @@
     "starlette": "1.10.0",
     "pydantic": "2.14.1"
   },
-  "public_deployment": "NOT_CREATED",
-  "real_oauth_login": "PENDING_PROVIDER_SETUP",
+  "public_deployment": "LIVE_HEALTH_200_UNAUTHENTICATED_MCP_401",
+  "real_oauth_login": "API_REGISTERED_CLIENT_CONFIGURATION_IN_PROGRESS",
   "real_chatgpt_attachment": "NOT_TESTED",
   "second_account": "NOT_TESTED",
-  "docker_linux_build": "NOT_RUN_DOCKER_UNAVAILABLE",
+  "docker_linux_build": "PASS_RENDER_BUILD_AND_STARTUP",
   "render_connection": "VERIFIED_WORKSPACE_CONFIRMED",
-  "github_target": "EMPTY_REPOSITORY_VERIFIED_UPLOAD_NOT_AUTHORIZED",
+  "github_target": "PUBLISHED_WITH_EXPLICIT_USER_AUTHORIZATION",
   "public_plugin_review": "NOT_SUBMITTED",
   "blueprint_schema": {
     "result": "PASS",
@@ -59,6 +59,8 @@
     "active_workers": 1,
     "max_entities": 250,
     "early_data_loss": "sleep/restart/redeploy",
-    "render_512mb_runtime": "NOT_TESTED"
-  }
+    "render_512mb_runtime": "STARTUP_PASS_CONVERSION_PENDING_REAL_OAUTH"
+  },
+  "public_service_url": "https://engineering-cad-converter-web.onrender.com",
+  "repository": "https://github.com/Boretto22/CAD-Converter"
 }

@@ -41,7 +41,7 @@ Para una extrusión rectangular o circular completamente definida: `engcad step 
 
 ## Servicio para ChatGPT en el navegador
 
-La implementación remota está en [browser_service](browser_service/README.md), con [activación gratuita guiada](browser_service/ACTIVAR.md). Usa Render Free y Auth0 Free, sin recursos de pago ni clave de API de OpenAI. Falta completar el despliegue y la conexión real de ChatGPT. El alojamiento gratuito tiene suspensión y almacenamiento temporal; descargar resultados al terminar.
+La implementación remota está en [browser_service](browser_service/README.md), con [activación gratuita guiada](browser_service/ACTIVAR.md). Usa Render Free y Auth0 Free, sin recursos de pago ni clave de API de OpenAI. El servicio ya arranca en [Render Free](https://engineering-cad-converter-web.onrender.com); falta completar OAuth y la conexión real de ChatGPT. El alojamiento gratuito tiene suspensión y almacenamiento temporal; descargar resultados al terminar.
 
 ## ChatGPT Plus y distribución
 

@@ -8,14 +8,18 @@ El adjunto de los tests de integración es una fixture sintética copiada al alm
 
 Se verifican separación de propietarios, vínculos firmados manipulados o caducados, cuotas, recuperación tras reinicio y eliminación de trabajos caducados. El modelo intenta pasar rutas externas en una prueba; el servidor las sustituye por la fuente de ese usuario. No hay ejecución de código del usuario.
 
-Pendientes externos: construcción y prueba del Docker en Linux/Render, inicio de sesión de un proveedor real, adjunto real desde ChatGPT, conexión de una segunda cuenta, capacidad bajo carga y revisión pública. El equipo de esta sesión no dispone de Docker. La CI incorpora su construcción para cuando se publique el repositorio.
+Pendientes externos: conversiones autenticadas en Render, inicio de sesión real del conversor, adjunto real desde ChatGPT, segunda cuenta, capacidad bajo carga y revisión pública. El equipo local no dispone de Docker; Render sí ha construido y arrancado la imagen Linux. La CI permite repetir la construcción manualmente.
 
 El aislamiento local por usuario y trabajador no demuestra resistencia completa ante vulnerabilidades de todas las bibliotecas nativas. La imagen se ejecuta con usuario sin privilegios y necesita los límites, actualizaciones, controles de red y almacenamiento del proveedor.
 
 Los resultados finales se guardan en `validation-results.json` sin rutas, credenciales o identificadores de cuenta. La validación de software no certifica cotas físicas ni tolerancias de fabricación.
 
-Resultado local del 28/10/2026: **37 pruebas superadas, 0 fallos, 0 errores y 0 omitidas**. Incluye 35 pruebas del servicio web y dos del empaquetado de la base. Los dos perfiles, `free` y `full`, recorren inspección de adjunto sintético, revisión de página, DXF/PDF, bloqueo por escala desconocida, STEP de un prisma nominal definido en PDF y descarga firmada. Se comprueban los nuevos límites gratuitos y que la plantilla no incluya recursos de pago.
+Resultado local del 28/10/2026: **39 pruebas superadas, 0 fallos, 0 errores y 0 omitidas**. Incluye 37 pruebas del servicio web y dos del empaquetado de la base. Los dos perfiles, `free` y `full`, recorren inspección de adjunto sintético, revisión de página, DXF/PDF, bloqueo por escala desconocida, STEP de un prisma nominal definido en PDF y descarga firmada. Se comprueban los nuevos límites gratuitos y que la plantilla no incluya recursos de pago.
 
-Render está conectado y el espacio de destino confirmado. Se ha verificado acceso a un repositorio vacío; no se ha subido código ni creado el servicio. El dominio público de identidad responde con descubrimiento OIDC y PKCE S256, pero no se ha completado OAuth real con el conversor. La guía `ACTIVAR.md` prepara los pasos restantes.
+Con autorización expresa del usuario, el código se ha publicado y se ha creado un único servicio Render Free. El primer despliegue del 28/10/2026 está `live`: `/health` devuelve 200 y perfil `free`; la metadata OAuth devuelve 200 con el recurso exacto `/mcp`; acceder a `/mcp` sin sesión devuelve 401. La imagen Docker se ha construido y arrancado en Linux dentro del plan Free de 512 MB. Esto verifica el arranque, no la memoria de una conversión completa. OAuth real y el flujo de ChatGPT siguen pendientes de completar.
 
-El Blueprint fija `plan: free`, una instancia, `region: frankfurt`, almacenamiento temporal sin disco y `autoDeployTrigger: "off"`. Su estructura pasa el esquema JSON público de Render consultado el 28/10/2026. La validación CLI y el despliegue siguen pendientes. Docker no está disponible en este equipo; no se ha medido el contenedor en Linux ni bajo los 512 MB de Render. Superar pruebas locales no garantiza capacidad en ese plan. GitHub Actions queda disponible solo para ejecución manual.
+Servicio: https://engineering-cad-converter-web.onrender.com
+
+Repositorio: https://github.com/Boretto22/CAD-Converter
+
+El Blueprint usa `plan: free`, una instancia, Frankfurt, almacenamiento temporal sin disco y despliegues automáticos desactivados. Pasa el esquema JSON público de Render. El alta directa MCP utiliza la comprobación TCP predeterminada de la plataforma; `/health` se ha probado por HTTPS. No se han contratado discos ni otros recursos de pago. GitHub Actions solo se ejecuta manualmente. La URL proporcionada por Render se usa automáticamente si no se define `CAD_BASE_URL`; hay pruebas de esa precedencia.
