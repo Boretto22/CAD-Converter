@@ -7,6 +7,7 @@ import os
 # This is not permission for arbitrary Azure storage accounts or suffix wildcards.
 DEFAULT_FILE_HOSTS = ('files.openai.com', 'files.oaiusercontent.com',
                       'sdmntprnortheu.oaiusercontent.com',
+                      'sdmntprindiasocentral.oaiusercontent.com',
                       'oaisdmntprnortheu.blob.core.windows.net',
                       'oaisdmntpritalynorth.blob.core.windows.net')
 
