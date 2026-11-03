@@ -6,6 +6,7 @@ import os
 # Exact Azure origin observed in a real ChatGPT fileParams handoff on 2026-10-28.
 # This is not permission for arbitrary Azure storage accounts or suffix wildcards.
 DEFAULT_FILE_HOSTS = ('files.openai.com', 'files.oaiusercontent.com',
+                      'sdmntpr*.oaiusercontent.com',
                       'sdmntprnortheu.oaiusercontent.com',
                       'sdmntprindiasocentral.oaiusercontent.com',
                       'oaisdmntprnortheu.blob.core.windows.net',
@@ -62,8 +63,8 @@ class Settings:
             raise ValueError('Replace the example signing key with a newly generated random secret')
         if not 60 <= self.link_seconds <= 3600 or not self.link_seconds <= self.retention_seconds <= 86400:
             raise ValueError('Links must last 1-60 minutes; retained jobs at most 24 hours')
-        if not self.file_hosts or any('*' in h or '/' in h or ':' in h for h in self.file_hosts):
-            raise ValueError('File hosts must be explicit DNS hostnames, without wildcards')
+        if not self.file_hosts or any(('/' in h or ':' in h or '*' in h) and h != 'sdmntpr*.oaiusercontent.com' for h in self.file_hosts):
+            raise ValueError('File hosts must be exact DNS hostnames or the restricted sdmntpr*.oaiusercontent.com regional rule')
         return self
 
     @classmethod
