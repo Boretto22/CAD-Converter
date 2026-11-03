@@ -64,7 +64,7 @@ class Store:
 
     def link(self, identifier, name, owner):
         row = self.get(identifier, owner)
-        if row['status'] != 'complete':
+        if row['status'] != 'complete' and not (row['status'] in {'blocked','failed'} and name == 'recovery.zip'):
             raise ValueError('Job has no downloadable result yet')
         expiry = min(int(time.time())+self.settings.link_seconds, int(row['expires']))
         signature = self.signature(identifier, name, expiry)
@@ -81,7 +81,7 @@ class Store:
             raise ValueError('Invalid download link')
         with self.connect() as db:
             row = db.execute('SELECT * FROM jobs WHERE id=?', (identifier,)).fetchone()
-        if not row or row['status'] != 'complete' or row['expires'] <= time.time():
+        if not row or (row['status'] != 'complete' and not (row['status'] in {'blocked','failed'} and name == 'recovery.zip')) or row['expires'] <= time.time():
             raise ValueError('Result unavailable')
         return row
 

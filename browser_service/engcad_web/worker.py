@@ -77,33 +77,47 @@ def inspect(root):
         pages.append({'page': index, 'image': review.name, 'pixel_size': size,
                       'sha256': engine.sha(review), 'original_pixel_size': original_size,
                       'transformation': f'Page/frame {index}; source render/orientation in manifest; review resized from {original_size} to {size}; coordinates top-left, x right, y down'})
+    artifacts = {'evidence.zip': 'inspection/evidence.zip', 'manifest.json': 'inspection/manifest.json'}
+    if source.suffix == '.pdf':
+        from engineering_cad_converter.pdf_vectors import extract
+        for page in pages:
+            folder = f'vectors-{page["page"]:03}'
+            extract(source, root / 'inspection' / folder, page['page'])
+            artifacts[f'page-{page["page"]:03}-vector-inventory.json'] = f'inspection/{folder}/vector-inventory.json'
+            artifacts[f'page-{page["page"]:03}-UNCALIBRATED.dxf'] = f'inspection/{folder}/pdf-strokes-UNCALIBRATED.dxf'
     engine.dump(root / 'inspection' / 'pages.json', pages)
     bundle(root / 'inspection', 'evidence.zip')
     return {'state': 'INSPECTED_DIMENSIONS_NOT_VERIFIED', 'source_sha256': engine.sha(source),
             'source_id': 'S1', 'pages': pages,
-            'artifacts': {'evidence.zip': 'inspection/evidence.zip', 'manifest.json': 'inspection/manifest.json'},
+            'artifacts': artifacts,
             'next': 'Read the relevant pages, identify verified dimensions and acceptance criteria; never invent missing values.'}
 
 
 def build(root, operation):
-    from engineering_cad_converter import engineering_gate, step_model
-    if operation == 'dxf':
+    from engineering_cad_converter import engineering_gate, step_model, recovery, review
+    recovery.checkpoint(root / 'model.json', root / 'recovery.zip')
+    (root / 'summary.json').write_text(json.dumps({'state': 'DRAFT_NOT_VALIDATED',
+        'artifacts': {'recovery.zip': 'recovery.zip'},
+        'next': 'Download recovery.zip, resolve the reported missing data, and revalidate before export.'}), encoding='utf-8')
+    if operation == 'preview':
+        result = review.preview(root / 'model.json', root / 'output')
+    elif operation == 'dxf':
         result = engineering_gate.build(root / 'model.json', root / 'output')
     else:
         result = step_model.build(root / 'model.json', root / 'output')
     bundle(root / 'output', 'delivery.zip')
     artifacts = {'delivery.zip': 'output/delivery.zip'}
     for name in ('plano.dxf', 'comprobacion.pdf', 'cad.png', 'informe.json', 'informe.md', 'engineering-check.json',
-                 'pieza.step', 'step-check.json', 'parametric.py'):
+                 'pieza.step', 'step-check.json', 'parametric.py', 'review.html', 'coverage.json', 'session.zip', 'draft-report.json'):
         if (root / 'output' / name).is_file():
             artifacts[name] = 'output/' + name
-    return {'state': 'DEFINED_REVIEW_PENDING', 'result': result, 'artifacts': artifacts,
+    return {'state': 'DRAFT_NOT_VALIDATED' if operation == 'preview' else 'DEFINED_REVIEW_PENDING', 'result': result, 'artifacts': artifacts,
             'next': 'Review the source interpretation, PDF and CAD in the intended application before engineering use.'}
 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('operation', choices=['inspect', 'dxf', 'step'])
+    p.add_argument('operation', choices=['inspect', 'dxf', 'step', 'preview'])
     p.add_argument('root')
     args = p.parse_args()
     root = Path(args.root).resolve()

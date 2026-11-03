@@ -47,7 +47,7 @@ class Manager:
     def get(self, owner, identifier):
         job = self.store.get(identifier, owner)
         result = {key: job[key] for key in ('id', 'kind', 'status', 'created', 'expires', 'error')}
-        if job['status'] == 'complete':
+        if job['status'] == 'complete' or (job['status'] in {'blocked','failed'} and (self.store.directory(identifier) / 'summary.json').is_file()):
             summary = json.loads((self.store.directory(identifier) / 'summary.json').read_text(encoding='utf-8'))
             result.update(summary)
             result['artifacts'] = {name: self.store.link(identifier, name, owner) for name in summary.get('artifacts', {})}
@@ -78,7 +78,7 @@ class Manager:
         return page, root / 'inspection' / page['image']
 
     async def submit_build(self, owner, parent, page, model, operation):
-        if operation not in ('dxf', 'step'):
+        if operation not in ('dxf', 'step', 'preview'):
             raise ValueError('Unsupported export')
         _, review_image = self.page(owner, parent, page)
         encoded = json.dumps(model, allow_nan=False)
@@ -95,6 +95,8 @@ class Manager:
                     or isinstance(item.get('page'), bool) or item.get('page') != page
                     for item in evidence):
                 raise ValueError('Every DXF evidence item must reference S1 and the selected page')
+        if operation == 'preview' and not isinstance(model.get('engineering', {}), dict):
+            raise ValueError('Draft engineering metadata must be an object')
         identifier = self.store.create(owner, operation)
         root = self.store.directory(identifier)
         parent_root = self.store.directory(parent)
@@ -104,9 +106,11 @@ class Manager:
         bound = json.loads(encoded)
         # Never trust paths from a tool caller: bind all file reads to this user's uploaded source.
         bound_source = {'id': 'S1', 'path': source.name, 'sha256': original_hash}
-        if operation == 'dxf':
+        if operation in ('dxf', 'preview'):
             shutil.copy2(review_image, root / 'review.png')
             bound['source_image'] = 'review.png'
+            if not isinstance(bound.get('engineering', {}), dict):
+                raise ValueError('Draft engineering metadata must be an object')
             engineering = bound.setdefault('engineering', {})
             engineering['sources'] = [bound_source]
             page_info, _ = self.page(owner, parent, page)

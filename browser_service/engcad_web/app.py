@@ -4,6 +4,7 @@ import base64
 from contextlib import asynccontextmanager, suppress
 import html
 import json
+import os
 import mimetypes
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -65,7 +66,7 @@ def create_app(settings, verifier=None):
                 result, image_path = manager.page(owner, arguments['job_id'], arguments['page'])
             else:
                 result = await manager.submit_build(owner, arguments['inspection_id'], arguments['page'], arguments['model'],
-                                                    'dxf' if params.name == 'export_cad_dxf' else 'step')
+                                                    'dxf' if params.name == 'export_cad_dxf' else 'preview' if params.name == 'prepare_cad_draft' else 'step')
             content = [types.TextContent(type='text', text=json.dumps(result, ensure_ascii=False, allow_nan=False))]
             if image_path:
                 content.append(types.ImageContent(type='image', mime_type='image/png', data=base64.b64encode(image_path.read_bytes()).decode()))
@@ -104,12 +105,12 @@ def create_app(settings, verifier=None):
         <h1>Engineering CAD Converter</h1><p>Convierte tus planos desde ChatGPT con medidas documentadas y un informe de comprobación.</p>
         <ol><li>Añade el servidor MCP en ChatGPT: <code>{endpoint}</code>.</li><li>Inicia sesión y autoriza tus trabajos.</li>
         <li>Adjunta un PDF o imagen y pide la conversión a DXF. El agente comprobará cotas y unidades antes de exportar.</li>
-        <li>Descarga el CAD y el PDF de revisión. STEP está limitado a extrusiones simples completamente definidas.</li></ol>
+        <li>Descarga el CAD y el PDF de revisión. STEP requiere perfiles y operaciones completamente definidos dentro del alcance admitido.</li></ol>
         <p>Retención: {retention}. Los reinicios del alojamiento gratuito pueden borrar trabajos antes. Los enlaces de descarga duran diez minutos. Los resultados requieren revisión técnica.</p>
         <p><a href="/privacy">Privacidad</a> · <a href="/terms">Condiciones</a> · <a href="/support">Ayuda</a></p></html>''')
 
     async def health(request):
-        return JSONResponse({'status': 'ok', 'service': 'engineering-cad-converter-web', 'version': '1.0.0', 'profile':settings.profile})
+        return JSONResponse({'status': 'ok', 'service': 'engineering-cad-converter-web', 'version': '1.0.0', 'profile':settings.profile, 'revision':os.environ.get('RENDER_GIT_COMMIT', 'unknown')})
 
     async def privacy(request):
         return PlainTextResponse('Engineering CAD Converter processes only files submitted by an authenticated user. '
