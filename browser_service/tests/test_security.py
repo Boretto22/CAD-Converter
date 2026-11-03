@@ -151,3 +151,26 @@ def test_attachment_wall_timeout(settings,monkeypatch):
         assert 'time limit' in manager.store.get(identifier,'alice')['error']
         await manager.close()
     asyncio.run(exercise())
+
+
+@pytest.mark.parametrize('host,accepted', [
+    ('sdmntprukwest.oaiusercontent.com', True),
+    ('sdmntprnewregion.oaiusercontent.com', True),
+    ('sdmntprukwest.oaiusercontent.com.evil.test', False),
+    ('sdmntprukwest.evil.test', False),
+    ('unverified.oaiusercontent.com', False),
+    ('sdmntpr.oaiusercontent.com', False),
+    ('sdmntprx.sub.oaiusercontent.com', False),
+])
+def test_restricted_regional_attachment_rule(settings, host, accepted):
+    if accepted:
+        assert validate_url('https://' + host + '/file', settings.file_hosts) == host
+    else:
+        with pytest.raises(ValueError):
+            validate_url('https://' + host + '/file', settings.file_hosts)
+
+
+def test_regional_rule_requires_opt_in(settings):
+    hosts = tuple(h for h in settings.file_hosts if h != 'sdmntpr*.oaiusercontent.com')
+    with pytest.raises(ValueError):
+        validate_url('https://sdmntprukwest.oaiusercontent.com/file', hosts)
