@@ -45,6 +45,8 @@ def test_attachment_rejection_diagnostic_excludes_signed_capability(settings):
 
 @pytest.mark.parametrize('url,allowed',[
     ('https://oaisdmntprnortheu.blob.core.windows.net/file?sig=synthetic',True),
+    ('https://sdmntprindiasocentral.oaiusercontent.com/file?sig=synthetic',True),
+    ('https://sdmntprindiasocentral.oaiusercontent.com.evil.test/file',False),
     ('https://sdmntprnortheu.oaiusercontent.com/file?sig=synthetic',True),
     ('https://sdmntprnortheu.oaiusercontent.com.evil.test/file',False),
     ('https://unverified.oaiusercontent.com/file',False),
