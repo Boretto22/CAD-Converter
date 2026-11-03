@@ -8,6 +8,10 @@ Estado: versión 1.0.0 del software. Reconstrucción **asistida**, no reconocimi
 
 La versión de servicio para usar adjuntos desde ChatGPT en navegador está en [browser_service/README.md](browser_service/README.md). Incluye MCP remoto, autenticación, trabajos y descargas. Su activación pública requiere completar alojamiento e inicio de sesión; los paquetes locales 1.0 ya entregados conservan su alcance de escritorio.
 
+## Mejoras de revisión y reconstrucción
+
+Consulta [los nuevos flujos](docs/IMPROVEMENTS.md): vista previa HTML editable, inventario de cobertura, sesiones descargables para reanudar borradores, extracción exacta de trazos PDF sin calibrar, STEP con perfiles poligonales/revoluciones completas y cortes documentados, y comparación con CAD de referencia. Las pruebas incluidas siguen siendo sintéticas; la validación con planos reales y CAD independientes está pendiente. El almacenamiento del alojamiento gratuito sigue siendo temporal.
+
 ## Empieza aquí
 
 En Windows con Python 3.12, desde esta carpeta:
@@ -39,7 +43,7 @@ python3.12 -m venv .venv
 
 Si falta una cota o el criterio, entrega el inventario pendiente y pide ese dato. No uses una puerta o un objeto de tamaño supuesto como regla. El PDF de comprobación está ajustado al papel y no sirve para medir con regla.
 
-Para una extrusión rectangular o circular completamente definida: `engcad step examples/step/model-step.json work/step-demo`. [Alcance STEP](skills/engineering-cad-converter/references/step.md).
+Para un ejemplo de extrusión rectangular completamente definida: `engcad step examples/step/model-step.json work/step-demo`. [Alcance STEP](skills/engineering-cad-converter/references/step.md).
 
 ## Servicio para ChatGPT en el navegador
 
@@ -51,7 +55,7 @@ El plugin local v1 requiere ejecución **local de escritorio**. Tener Plus no ga
 
 Se distribuyen tres ZIP: fuente preparada para GitHub, plugin con `plugin.json` en la raíz y skill independiente. El repositorio local es utilizable sin ChatGPT. Subir un ZIP a un chat no demuestra que se haya instalado un plugin. La publicación oficial requiere el proceso del portal; este proyecto no afirma estar aprobado ni publicado.
 
-El paquete completo `Engineering-CAD-Converter-v1.0.0.zip` reúne los tres ZIP, wheel/sdist cuando se han construido, instrucciones y checksums. Validación local: **44 pruebas superadas**, con los límites descritos en [VALIDATION.md](docs/VALIDATION.md).
+El paquete completo `Engineering-CAD-Converter-v1.0.0.zip` reúne los tres ZIP, wheel/sdist cuando se han construido, instrucciones y checksums. Validación histórica de la entrega inicial (27/10/2026): **44 pruebas superadas**; para el estado actual consulta la ejecución CI del commit, con los límites descritos en [VALIDATION.md](docs/VALIDATION.md).
 
 ## Qué contiene
 

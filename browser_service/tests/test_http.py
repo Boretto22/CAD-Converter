@@ -51,7 +51,7 @@ def test_health_auth_and_discovery(settings, verifier):
         discovered = rpc(client, 'server/discover', {'supportedVersions':['2026-07-28'], 'capabilities':{}})
         assert '2026-07-28' in discovered['supportedVersions']
         tools = rpc(client, 'tools/list')['tools']
-        assert len(tools) == 6
+        assert len(tools) == 7
         inspector = next(tool for tool in tools if tool['name'] == 'inspect_cad_source')
         assert inspector['_meta']['openai/fileParams'] == ['file']
         assert inspector['inputSchema']['properties']['file'] == FILE_SCHEMA
@@ -101,7 +101,8 @@ def test_http_end_to_end_dxf_and_download(settings, verifier, local_attachment,p
         bad = call(client,'export_cad_dxf',{'inspection_id':inspection['id'],'page':1,'model':model})['structuredContent']
         blocked = complete(client,bad['job_id'])
         assert blocked['status'] == 'blocked', blocked
-        assert 'artifacts' not in blocked
+        assert set(blocked['artifacts']) == {'recovery.zip'}
+        assert client.get(blocked['artifacts']['recovery.zip']).status_code == 200
         step_source = call(client,'inspect_cad_source',{'file':{**local_attachment,'file_id':'step_fixture','file_name':'spec.pdf','mime_type':'application/pdf'}})['structuredContent']
         step_inspection = complete(client,step_source['job_id'])
         assert step_inspection['status'] == 'complete'
@@ -126,3 +127,32 @@ def test_wrong_host_rejected(settings, verifier):
     with TestClient(create_app(settings, verifier), base_url=settings.base_url) as client:
         response = client.post('/mcp', headers={**HEADERS,'Host':'attacker.test'}, json={'jsonrpc':'2.0','id':1,'method':'tools/list'})
         assert response.status_code == 421
+
+
+def test_incomplete_draft_preview_and_checkpoint(settings, verifier, local_attachment):
+    app = create_app(settings, verifier)
+    with TestClient(app, base_url=settings.base_url) as client:
+        submitted = call(client,'inspect_cad_source',{'file':local_attachment})['structuredContent']
+        inspection = complete(client, submitted['job_id'])
+        assert inspection['status'] == 'complete'
+        draft = call(client,'prepare_cad_draft',{'inspection_id':inspection['id'],'page':1,
+                     'model':{'entities':[],'issues':['Need scale']}})['structuredContent']
+        result = complete(client,draft['job_id'])
+        assert result['status'] == 'complete' and result['state'] == 'DRAFT_NOT_VALIDATED'
+        assert client.get(result['artifacts']['review.html']).status_code == 200
+        response = client.get(result['artifacts']['session.zip'])
+        import io, zipfile
+        with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+            model = json.loads(archive.read('model.json'))
+            assert model['issues'] == ['Need scale']
+        assert call(client,'get_cad_job',{'job_id':result['id']},token='bob')['isError']
+
+
+def test_blocked_job_cannot_sign_normal_cad_artifact(settings):
+    from engcad_web.store import Store
+    store = Store(settings)
+    job = store.create('alice','dxf')
+    store.update(job,'blocked','Need dimension')
+    assert 'recovery.zip' in store.link(job,'recovery.zip','alice')
+    with pytest.raises(ValueError):
+        store.link(job,'plano.dxf','alice')

@@ -14,7 +14,7 @@ Después de completar el acceso:
 2. Inicia sesión cuando ChatGPT lo solicite.
 3. Adjunta tu PDF, imagen o croquis. Escribe: «Convierte este plano a DXF. Comprueba las unidades, las cotas y la escala; pregunta por cualquier dato que falte».
 4. Responde las preguntas sobre referencias o criterio de aceptación.
-5. Descarga el ZIP, DXF y PDF. STEP se entrega únicamente para una extrusión rectangular/circular completamente definida.
+5. Descarga el ZIP, DXF y PDF. STEP requiere perfiles y operaciones completamente definidos dentro del alcance documentado en IMPROVEMENTS.md.
 
 El informe conserva el estado REVISIÓN PENDIENTE. Una prueba automática no certifica precisión física o fabricación. Los enlaces duran diez minutos y pueden renovarse mientras el trabajo esté retenido. En el perfil gratuito, los trabajos caducan como máximo en una hora y se limpian en el siguiente ciclo, normalmente en 60 segundos. Render pierde los archivos al suspenderse, reiniciarse o desplegarse: pueden desaparecer antes. Descargar resultados al terminar.
 
@@ -54,7 +54,7 @@ El perfil opcional `full` conserva los límites anteriores de 20 MiB, 12 página
 
 ## Entrega y validación
 
-[VALIDATION.md](VALIDATION.md) detalla las 46 pruebas locales, los dos casos reales en ChatGPT y sus límites. Los orígenes regionales de archivos no observados requieren revisión del propietario; no se admiten automáticamente. `review-cases.json` prepara cinco casos positivos y tres negativos para revisión del plugin. El vídeo y las pruebas reales de OAuth/ChatGPT no se inventan.
+[VALIDATION.md](VALIDATION.md) detalla las pruebas de la entrega histórica del 28/10/2026; la ejecución CI de cada commit informa el recuento vigente, los dos casos reales en ChatGPT y sus límites. Los orígenes regionales de archivos no observados requieren revisión del propietario; no se admiten automáticamente. `review-cases.json` prepara cinco casos positivos y tres negativos para revisión del plugin. El vídeo y las pruebas reales de OAuth/ChatGPT no se inventan.
 
 Para generar el plugin después de obtener la URL real:
 
@@ -65,3 +65,8 @@ python browser_service/configure_plugin.py --base-url URL_HTTPS_REAL --publisher
 Se genera `plugin.json`, `mcp.json`, la skill remota y su ZIP. CIMD es el valor predeterminado; puede indicarse `--oauth-client-id` para un cliente público previamente registrado con PKCE. El proveedor debe soportar el modo elegido. El generador no crea cuentas OAuth ni acredita una identidad pública.
 
 Para empaquetar todo el servicio y el motor: `python browser_service/package_browser_service.py --output dist/web-release`.
+
+
+## Borradores y funciones ampliadas
+
+`prepare_cad_draft` añade revisión HTML, cobertura declarada y sesión recuperable. Las inspecciones PDF incluyen trazos vectoriales sin calibrar; una exportación bloqueada puede devolver solo `recovery.zip`. Consulta [alcance, contratos y límites](../docs/IMPROVEMENTS.md). Los resultados nominales siguen exigiendo evidencia y revisión. No se ha contratado almacenamiento duradero.

@@ -72,6 +72,12 @@ def check(model_path):
     coverage = model.get("coverage", {})
     if coverage.get("review") != "complete" or coverage.get("omitted") != []:
         fail("cobertura del alcance incompleta")
+    try:
+        from .review import coverage as inventory_report
+    except ImportError:
+        from review import coverage as inventory_report
+    if inventory_report(model)["problems"]:
+        fail("; ".join(inventory_report(model)["problems"]))
     sources = index_unique(eng.get("sources"), "fuentes")
     page_counts = {}
     for sid, source in sources.items():
@@ -208,6 +214,11 @@ def build(model_path, output):
     portable = assurance.portable_sources(model, Path(model_path).resolve().parent, output)
     engine.dump(Path(output) / "modelo-reproducible.json", portable)
     engine.dump(Path(output) / "engineering-check.json", result)
+    try:
+        from .review import write_review
+    except ImportError:
+        from review import write_review
+    write_review(portable, Path(output) / "fuente.png", Path(output) / "cad.png", Path(output), "DEFINED_REVIEW_PENDING")
     engine.dump(Path(output) / 'status.json', {'status': 'DEFINED_REVIEW_PENDING'})
     return result
 

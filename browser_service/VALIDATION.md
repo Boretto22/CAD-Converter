@@ -14,7 +14,7 @@ El aislamiento local por usuario y trabajador no demuestra resistencia completa 
 
 Los resultados finales se guardan en `validation-results.json` sin rutas, credenciales o identificadores de cuenta. La validación de software no certifica cotas físicas ni tolerancias de fabricación.
 
-Resultado local del 28/10/2026: **46 pruebas superadas, 0 fallos, 0 errores y 0 omitidas**. Incluye 44 pruebas del servicio web y dos del empaquetado de la base. Se verifican perfiles gratuito/completo, límites, controles, separación de propietarios, JWT, descargas, orígenes admitidos y rechazo de otras cuentas Azure o dominios engañosos. Las pruebas locales usan archivos sintéticos y sustitutos de autenticación/descarga donde se indica arriba; la comprobación real siguiente es independiente de esos sustitutos.
+Resultado HISTÓRICO de la entrega del 28/10/2026 (no es el recuento vigente): **46 pruebas superadas, 0 fallos, 0 errores y 0 omitidas**. Incluye 44 pruebas del servicio web y dos del empaquetado de la base. Se verifican perfiles gratuito/completo, límites, controles, separación de propietarios, JWT, descargas, orígenes admitidos y rechazo de otras cuentas Azure o dominios engañosos. Las pruebas locales usan archivos sintéticos y sustitutos de autenticación/descarga donde se indica arriba; la comprobación real siguiente es independiente de esos sustitutos.
 
 ## Prueba real en ChatGPT web y Render Free
 
@@ -35,3 +35,10 @@ Servicio: https://engineering-cad-converter-web.onrender.com
 Repositorio: https://github.com/Boretto22/CAD-Converter
 
 El servicio usa una instancia Free, Frankfurt, almacenamiento temporal sin disco y despliegues por cambios de Git desactivados. La plantilla pasa el esquema público de Render. `/health` responde 200 con perfil `free`; el acceso sin sesión a `/mcp` responde 401. La plataforma usa la comprobación TCP predeterminada en el alta directa. No se han contratado recursos de pago. GitHub Actions es manual. La publicación en el directorio público no se ha solicitado.
+
+
+## Validación de las mejoras posteriores
+
+La ejecución de CI del commit correspondiente es la referencia para el recuento vigente; no extrapolar los 46 ensayos históricos a versiones posteriores. La suite añade errores de entrada por CLI, cobertura, recuperación de sesiones, recorridos HTTP de borradores y geometría STEP ampliada. Se mantienen fixtures sintéticas. El procedimiento para aportar pares reales fuente/CAD independiente se documenta en [IMPROVEMENTS.md](../docs/IMPROVEMENTS.md).
+
+Los adjuntos regionales actuales de OpenAI admiten la regla restringida y explícitamente configurable `sdmntpr*.oaiusercontent.com`; no se amplía a cuentas Azure arbitrarias. Las verificaciones de HTTPS, DNS público y ausencia de redirecciones se mantienen.

@@ -11,6 +11,7 @@ import json
 import math
 import re
 import shutil
+import tempfile
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -56,6 +57,26 @@ def versions():
 
 
 def inspect_source(source, out, dpi=200):
+    """Publish only a complete inspection; failures never leave a plausible partial result."""
+    source, out = Path(source).resolve(), Path(out).resolve()
+    if out.exists():
+        raise FileExistsError(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    import pymupdf
+    from PIL import UnidentifiedImageError
+    try:
+        with tempfile.TemporaryDirectory(dir=out.parent) as temporary:
+            stage = Path(temporary) / 'inspection'
+            report = _inspect_source(source, stage, dpi)
+            stage.rename(out)
+            return report
+    except (pymupdf.FileDataError, pymupdf.EmptyFileError) as exc:
+        raise ValueError('El archivo no es un PDF valido, o esta danado') from exc
+    except UnidentifiedImageError as exc:
+        raise OSError('El archivo no es una imagen valida, o esta danado') from exc
+
+
+def _inspect_source(source, out, dpi=200):
     source, out = Path(source).resolve(), Path(out).resolve()
     if not source.is_file():
         raise ValueError("No existe el archivo de entrada")

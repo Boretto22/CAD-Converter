@@ -1,6 +1,7 @@
 """Local command interface; never implies engineering certification."""
 import argparse
 import json
+import zipfile
 from pathlib import Path
 
 try:
@@ -23,11 +24,20 @@ def main(argv=None):
     for name in ('build', 'step'):
         a = commands.add_parser(name); a.add_argument('model'); a.add_argument('output')
     a = commands.add_parser('demo'); a.add_argument('output')
+    for name in ('preview', 'checkpoint', 'resume', 'vectors', 'benchmark'):
+        a = commands.add_parser(name); a.add_argument('source'); a.add_argument('output')
+        if name == 'vectors':
+            a.add_argument('--page', type=int, default=1)
     args = p.parse_args(argv)
     try:
         if args.command == 'doctor':
             result = {'version': '1.0.0', 'dependencies': engine.versions(),
                       'step_optional': True, 'recognition': 'agent-assisted; no automatic OCR/CAD recognition'}
+        elif args.command in ('preview', 'checkpoint', 'resume', 'vectors', 'benchmark'):
+            from . import review, recovery, pdf_vectors, benchmark
+            functions = {'preview': review.preview, 'checkpoint': recovery.checkpoint, 'resume': recovery.resume,
+                         'vectors': lambda a,b: pdf_vectors.extract(a,b,args.page), 'benchmark': benchmark.run}
+            result = functions[args.command](args.source, args.output)
         elif args.command == 'inspect':
             result = engine.inspect_source(args.source, args.output, args.dpi)
         elif args.command == 'check':
@@ -44,8 +54,11 @@ def main(argv=None):
             demo(args.output)
             result = {'output': str(Path(args.output).resolve()), 'synthetic': True}
         print(json.dumps(result, ensure_ascii=False, allow_nan=False))
-    except (ValueError, KeyError, TypeError, OSError, ImportError) as exc:
-        p.exit(2, f'BLOQUEADO: {exc}\n')
+    except (ValueError, KeyError, TypeError, OSError, ImportError, zipfile.BadZipFile) as exc:
+        message = str(exc)
+        while message.startswith('BLOQUEADO: '):
+            message = message[len('BLOQUEADO: '):]
+        p.exit(2, f'BLOQUEADO: {message}\n')
 
 
 if __name__ == '__main__':

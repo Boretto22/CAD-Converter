@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import zipfile
@@ -15,23 +16,32 @@ EXCLUDE = {'__pycache__', '.pytest_cache', '.git', '.venv', 'build', 'dist'}
 
 def selected(root):
     files = []
-    for file in root.rglob('*'):
+    candidates = [root / name for name in TOP_FILES if (root / name).is_file()]
+    for directory in DIRECTORIES:
+        start = root / directory
+        if not start.is_dir():
+            continue
+        for folder, directories, names in os.walk(start, followlinks=False):
+            directories[:] = [name for name in directories if name not in EXCLUDE and not name.endswith('.egg-info')]
+            if Path(folder) == root / 'browser_service':
+                directories[:] = [name for name in directories if name in {'engcad_web','tests','plugin','deploy'}]
+            candidates.extend(Path(folder) / name for name in names)
+    for file in candidates:
         rel = file.relative_to(root)
-        if file.is_file() and (rel.as_posix() in TOP_FILES or rel.parts[0] in DIRECTORIES):
-            if rel.parts[0] == 'browser_service':
-                allowed_roots = {'engcad_web', 'tests', 'plugin', 'deploy'}
-                allowed_files = {'Dockerfile', 'pyproject.toml', 'README.md', 'ACTIVAR.md', 'USAR-EN-CHATGPT.md', 'VALIDATION.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md',
-                                 'validation-results.json', 'requirements-tested.txt', 'review-cases.json',
-                                 'configure_plugin.py', 'package_browser_service.py'}
-                if (len(rel.parts) == 2 and file.name not in allowed_files) or (len(rel.parts) > 2 and rel.parts[1] not in allowed_roots):
-                    continue
-            if any(p in EXCLUDE or p.endswith('.egg-info') for p in rel.parts) or file.suffix in {'.pyc', '.pyo', '.key', '.pem'}:
+        if rel.parts[0] == 'browser_service':
+            allowed_roots = {'engcad_web', 'tests', 'plugin', 'deploy'}
+            allowed_files = {'Dockerfile', 'pyproject.toml', 'README.md', 'ACTIVAR.md', 'USAR-EN-CHATGPT.md', 'VALIDATION.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md',
+                             'validation-results.json', 'requirements-tested.txt', 'review-cases.json',
+                             'configure_plugin.py', 'package_browser_service.py'}
+            if (len(rel.parts) == 2 and file.name not in allowed_files) or (len(rel.parts) > 2 and rel.parts[1] not in allowed_roots):
                 continue
-            if file.name == '.env' or file.name.startswith('.env.'):
-                continue
-            if file.is_symlink() or not file.resolve().is_relative_to(root.resolve()):
-                raise ValueError('Refusing external/symlink package content')
-            files.append(file)
+        if any(p in EXCLUDE or p.endswith('.egg-info') for p in rel.parts) or file.suffix in {'.pyc', '.pyo', '.key', '.pem'}:
+            continue
+        if file.name == '.env' or file.name.startswith('.env.'):
+            continue
+        if file.is_symlink() or not file.resolve().is_relative_to(root.resolve()):
+            raise ValueError('Refusing external/symlink package content')
+        files.append(file)
     return sorted(files)
 
 
