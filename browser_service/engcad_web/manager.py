@@ -88,6 +88,13 @@ class Manager:
             raise ValueError('Too many CAD entities; split the scope')
         if operation == 'dxf' and not isinstance(model.get('engineering'), dict):
             raise ValueError('Supply the engineering evidence object before exporting')
+        if operation == 'dxf':
+            evidence = model['engineering'].get('evidence', [])
+            if not isinstance(evidence, list) or any(
+                    not isinstance(item, dict) or item.get('source_id') != 'S1'
+                    or isinstance(item.get('page'), bool) or item.get('page') != page
+                    for item in evidence):
+                raise ValueError('Every DXF evidence item must reference S1 and the selected page')
         identifier = self.store.create(owner, operation)
         root = self.store.directory(identifier)
         parent_root = self.store.directory(parent)
@@ -117,7 +124,12 @@ class Manager:
                 root = self.store.directory(identifier)
                 (root / 'limits.json').write_text(json.dumps(self.settings.parser_limits), encoding='utf-8')
                 if file is not None:
-                    await asyncio.wait_for(files.download(file, root, self.settings), timeout=45)
+                    try:
+                        await asyncio.wait_for(files.download(file, root, self.settings), timeout=45)
+                    except ValueError as exc:
+                        # Download validation messages omit signed URLs and describe actionable limits.
+                        self.store.update(identifier, 'blocked', str(exc)[:1200])
+                        return
                 environment = {key: value for key, value in os.environ.items()
                                if key.upper() in {'PATH', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'HOME', 'LANG', 'LC_ALL'}}
                 environment.update(OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MPLCONFIGDIR=str(root / 'cache'))
@@ -144,7 +156,7 @@ class Manager:
                     raise
                 if proc.returncode != 0:
                     failure = root / 'failure.json'
-                    message = json.loads(failure.read_text())['error'] if failure.exists() else 'Worker stopped: resource limit or unsupported input'
+                    message = json.loads(failure.read_text(encoding='utf-8'))['error'] if failure.exists() else 'Worker stopped: resource limit or unsupported input'
                     self.store.update(identifier, 'blocked' if proc.returncode == 2 else 'failed', message)
                 else:
                     self.store.update(identifier, 'complete')

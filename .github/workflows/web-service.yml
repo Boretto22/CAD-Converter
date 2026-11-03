@@ -1,5 +1,13 @@
 name: Browser service
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'browser_service/**'
+      - 'skills/engineering-cad-converter/scripts/**'
+      - 'examples/**'
+      - 'pyproject.toml'
+      - '.github/workflows/web-service.yml'
 permissions:
   contents: read
 jobs:

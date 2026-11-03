@@ -36,15 +36,20 @@ async def download(file, destination, settings, client=None):
         raise ValueError('A ChatGPT file reference is required')
     extension = Path(file.get('file_name') or '').suffix.lower()
     extension = extension if extension in EXTENSIONS else MIME_EXTENSIONS.get(file.get('mime_type'))
-    if extension not in EXTENSIONS:
-        raise ValueError('Upload a PDF or supported PNG/JPEG/TIFF/WebP/BMP image')
-    target = Path(destination) / ('source' + extension)
     owned = client is None
     client = client or httpx.AsyncClient(timeout=30, follow_redirects=False, trust_env=False)
     try:
         async with client.stream('GET', file['download_url'], follow_redirects=False) as response:
             if response.status_code != 200:
                 raise ValueError('Attachment download failed; attach the file again to renew access')
+            # file_name and mime_type are optional in the attachment contract.
+            # Use the response media type when neither supplied a supported suffix.
+            if extension not in EXTENSIONS:
+                media_type = response.headers.get('content-type', '').split(';', 1)[0].strip().lower()
+                extension = MIME_EXTENSIONS.get(media_type)
+            if extension not in EXTENSIONS:
+                raise ValueError('Upload a PDF or supported PNG/JPEG/TIFF/WebP/BMP image with a supported filename or media type')
+            target = Path(destination) / ('source' + extension)
             length = response.headers.get('content-length')
             if length and int(length) > settings.max_upload_bytes:
                 raise ValueError('File exceeds the upload limit for this deployment')
