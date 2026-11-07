@@ -10,7 +10,15 @@ def extract(source, output, page=1):
     source, output = Path(source).resolve(), Path(output).resolve()
     if output.exists():
         raise FileExistsError(output)
-    with pymupdf.open(source) as pdf:
+    if not source.is_file():
+        raise ValueError('No existe el archivo de entrada')
+    try:
+        pdf = pymupdf.open(source)
+    except pymupdf.FileNotFoundError as exc:
+        raise ValueError('No existe el archivo de entrada') from exc
+    except (pymupdf.FileDataError, pymupdf.EmptyFileError) as exc:
+        raise ValueError('El archivo no es un PDF valido, o esta danado') from exc
+    with pdf:
         if pdf.needs_pass or isinstance(page, bool) or not 1 <= page <= len(pdf):
             raise ValueError('Invalid or inaccessible PDF page')
         view = pdf[page - 1]

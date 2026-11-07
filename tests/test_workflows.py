@@ -1,9 +1,32 @@
 import copy
 import json
+import subprocess
+import sys
 from pathlib import Path
 import zipfile
 import pytest
 from engineering_cad_converter import cad_pipeline as engine, cli, recovery, review, pdf_vectors, benchmark
+
+
+@pytest.mark.parametrize('contents, message', [
+    (b'%PDF-1.4\ngarbage not a pdf\n', 'El archivo no es un PDF valido, o esta danado'),
+    (b'', 'El archivo no es un PDF valido, o esta danado'),
+    (None, 'No existe el archivo de entrada'),
+])
+def test_vectors_cli_rejects_invalid_source_without_traceback(tmp_path, contents, message):
+    source = tmp_path / 'input.pdf'
+    if contents is not None:
+        source.write_bytes(contents)
+    output = tmp_path / 'output'
+    result = subprocess.run(
+        [sys.executable, '-m', 'engineering_cad_converter.cli',
+         'vectors', str(source), str(output)],
+        capture_output=True, text=True, encoding='utf-8',
+    )
+    assert result.returncode == 2
+    assert result.stderr == f'BLOQUEADO: {message}\n'
+    assert result.stdout == ''
+    assert not output.exists()
 
 
 def test_corrupt_pdf_cli_is_atomic_and_readable(tmp_path, capsys):
